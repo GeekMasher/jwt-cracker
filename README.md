@@ -23,32 +23,50 @@ npm install --global jwt-cracker
 
 ## Usage
 
-From command line:
+**From command line:**
 
 ```bash
-jwt-cracker <token> [<alphabet>] [<maxLength>]
+jwt-cracker -t <token> [options]
 ```
 
-Where:
+**Options:**
 
-* **token**: the full HS256 JWT token string to crack
-* **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-* **maxLength**: the max length of the string generated during the brute force (default: 12)
-
+```
+Options:
+  --quite                   Run quitely
+  -w, --wordlist            Wordlist to use to use in dictionary attack
+  -a, --alphabet            Charecters used in the brute force attack
+  -M, --max-length          Maximum string length of brute force attack payload
+```
 
 ## Requirements
 
 This script requires Node.js version 6.0.0 or higher
 
-## Example
+## Examples
+
+### Brute Force Attack 
 
 Cracking the default [jwt.io example](https://jwt.io):
 
 ```bash
-jwt-cracker "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ" "abcdefghijklmnopqrstuwxyz" 6
+# Brute force attack
+jwt-cracker -t "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
 ```
 
 It takes about 2 hours in a Macbook Pro (2.5GHz quad-core Intel Core i7).
+
+
+### Dictionary Attack
+
+Cracking the defailt [jwt.io example](https://jwt.io) using [danielmiessler/SecLists](https://github.com/danielmiessler/SecLists/tree/master/Passwords) password lists:
+
+```bash
+# Dictionary attack using wordlist
+jwt-cracker -w "/usr/share/wordlists/10-million-password-list-top-1000000.txt" -t "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+```
+
+The list being used will NOT crack this JWT due to that key not being in the list.
 
 
 ## Contributing
